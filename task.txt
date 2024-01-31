@@ -1,0 +1,23 @@
+My ride:
+===========
+Roles: Driver, Customer
+
+Driver:
+Can register and sign-in in driver panel - Done
+Register vehicle (two/four wheeler) - Done
+Set status (active, inactive) - Done
+If active then fetch current location - Done
+Accept request for ride
+Start/finish/cancel ride
+
+Customer:
+Can register and sign-in on customer portal - Done
+Find cab
+Start point (current live location only for now) - Done
+Destination
+Show list for nearby available drivers (search max for 10 minutes)
+Request to driver
+Wait to accept ride (max 5 minutes then end ride)
+Show history for all rides
+
+Please send the github link as reply to all to this email after completing your assignment.
