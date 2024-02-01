@@ -2,8 +2,8 @@ import express from "express";
 import jwt from "jsonwebtoken";
 
 export const isDriverAuthenticated = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const driverAuthToken = req.cookies.driverAuthToken;
-    const driverRefreshToken = req.cookies.driverRefreshToken;
+    const driverAuthToken = req.cookies.driverAuthToken || req.body.driverAuthToken;
+    const driverRefreshToken = req.cookies.driverRefreshToken || req.body.driverRefreshToken;
     if (!driverAuthToken && !driverRefreshToken) {
         return res.status(401).json({
             message: "Authentication failed: No authToken or refreshToken provided..."

@@ -1,25 +1,65 @@
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { setDriver, removeDriver, selectDriverAuth } from "../store/reducers/driverSlice";
+import {
+  setDriver,
+  removeDriver,
+  selectDriverAuth,
+} from "../store/reducers/driverSlice";
 import { useNavigate } from "react-router-dom";
-import { useLazyLogoutDriverQuery } from "../services/api";
-import { FormEvent, useState } from "react";
+import { useLazyLogoutDriverQuery, useUpdateDriverLocMutation } from "../services/api";
+import { FormEvent, useEffect, useState } from "react";
 
+type Location = {
+  latitude: number | null;
+  longitude: number | null;
+};
 
 function DriverHeader() {
-  const { name, token, status } = useAppSelector(selectDriverAuth);
+  const { name, location, driverAuthToken, driverRefreshToken, status } =
+    useAppSelector(selectDriverAuth);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [logoutDriver, { data, isSuccess, isError, error }] =
+  const [logoutDriver] =
     useLazyLogoutDriverQuery();
 
-  const handleUpdateStatus = (e: FormEvent) => {
+  const [updateDriverLoc, { data, isSuccess, isError, error }] =
+    useUpdateDriverLocMutation();
+
+  const handleUpdateStatus = async (e: FormEvent) => {
     e.preventDefault();
-    dispatch(
-      setDriver({ name: name || "", token: token || "", status: !status })
-    );
-  }
+    if(!status) {
+      dispatch(
+        setDriver({
+          name: name || "",
+          location: town,
+          driverAuthToken: driverAuthToken || "",
+          driverRefreshToken: driverRefreshToken || "",
+          status: !status,
+        })
+      );
+      await updateDriverLoc({
+        location: town,
+        driverAuthToken: driverAuthToken || "",
+        driverRefreshToken: driverRefreshToken || "",
+      });
+    } else {
+      dispatch(
+        setDriver({
+          name: name || "",
+          location: "",
+          driverAuthToken: driverAuthToken || "",
+          driverRefreshToken: driverRefreshToken || "",
+          status: !status,
+        })
+      );
+      await updateDriverLoc({
+        location: "",
+        driverAuthToken: driverAuthToken || "",
+        driverRefreshToken: driverRefreshToken || "",
+      });
+    }
+  };
 
   const handleLogout = async () => {
     await logoutDriver();
@@ -27,16 +67,55 @@ function DriverHeader() {
     navigate("/loginDriver");
   };
 
+  const [position, setPosition] = useState<Location>({
+    latitude: null,
+    longitude: null,
+  });
+  const [town, setTown] = useState<string>("");
+  const [townIsSet, setTownIsSet] = useState<boolean>(false)
+
+  const fetchCity = async (latitude: any, longitude: any) => {
+    let response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+    );
+    let data = await response.json();
+    setTown(data.address.town);
+    setTownIsSet(true);
+  };
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(async function (position) {
+        setPosition({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+        if (position.coords.latitude !== null) {
+          await fetchCity(position.coords.latitude, position.coords.longitude);
+        }
+      });
+    } else {
+      console.log("Geolocation is not available in your browser.");
+    }
+  }, []);
+
   return (
     <header className="text-gray-600 body-font">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-          
           <span className="ml-3 text-xl">My Ride App</span>
         </a>
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
           <a className="mr-5 hover:text-gray-900">Hello {name}</a>
-          <a onClick={handleUpdateStatus} className="mr-5 hover:text-gray-900 cursor-pointer">Change Status: {status ? "Active" : "Inactive"}</a>
+          <a
+            onClick={handleUpdateStatus}
+            className="mr-5 hover:text-gray-900 cursor-pointer"
+          >
+            Change Status:{" "}
+            <span className="text-lg text-green-600">
+              {status ? "Active" : "Inactive"}
+            </span>
+          </a>
         </nav>
         <button
           onClick={handleLogout}

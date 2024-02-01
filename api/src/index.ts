@@ -6,8 +6,8 @@ import cors from "cors";
 import { connectToDatabase } from "./dbConnection";
 import customerAuthRoutes from "./routes/customerAuth.route"
 import driverAuthRoutes from "./routes/driverAuth.route"
-import customerLocRoutes from "./routes/customerLoc.route"
-import driverLocRoutes from "./routes/driverLoc.route"
+import customerRoutes from "./routes/customer.route"
+import driverRoutes from "./routes/driver.route"
 
 dotenv.config();
 const app = express();
@@ -41,5 +41,5 @@ app.listen(PORT, () => {
 // Routes
 app.use("/api/customerAuth", customerAuthRoutes);
 app.use("/api/driverAuth", driverAuthRoutes);
-app.use("/api/customerLoc", customerLocRoutes);
-app.use("/api/driverLoc", driverLocRoutes);
+app.use("/api/customer", customerRoutes);
+app.use("/api/driver", driverRoutes);

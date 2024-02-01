@@ -79,7 +79,7 @@ export const login = async (req: express.Request, res: express.Response) => {
         );
         res.cookie("driverAuthToken", driverAuthToken, { httpOnly: true });
         res.cookie("driverRefreshToken", driverRefreshToken, { httpOnly: true });
-        res.status(200).json({ message: "Login Successfull...", driver, driverId: driver._id, token: driverAuthToken });
+        res.status(200).json({ message: "Login Successfull...", driver, driverAuthToken, driverRefreshToken });
     } catch (err) {
         res.status(500).json({
             message: "Unable to login..."

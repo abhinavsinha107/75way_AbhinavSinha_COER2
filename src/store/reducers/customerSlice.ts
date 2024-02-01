@@ -3,30 +3,40 @@ import { RootState } from "../store";
 
 export interface CustomerAuthState {
     name: string | null;
-    token: string | null;
+    location: string | null;
+    customerAuthToken: string | null;
+    customerRefreshToken: string | null;
 }
 
 const initialState: CustomerAuthState = {
     name: null,
-    token: null
+    location: null,
+    customerAuthToken: null,
+    customerRefreshToken: null,
 }
 
 export const customerAuthSlice = createSlice({
     name: "customerAuth",
     initialState,
     reducers: {
-        setCustomer: (state, action: PayloadAction<{ name: string, token: string }>) => {
+        setCustomer: (state, action: PayloadAction<{ name: string, location: string, customerAuthToken: string, customerRefreshToken: string }>) => {
             localStorage.setItem("customer", JSON.stringify({
                 name: action.payload.name,
-                token: action.payload.token
+                location: action.payload.location,
+                customerAuthToken: action.payload.customerAuthToken,
+                customerRefreshToken: action.payload.customerAuthToken,
             }))
             state.name = action.payload.name;
-            state.token = action.payload.token;
+            state.location = action.payload.location;
+            state.customerAuthToken = action.payload.customerAuthToken;
+            state.customerRefreshToken = action.payload.customerRefreshToken;
         },
         removeCustomer: (state) => {
             localStorage.removeItem("customer");
             state.name = "";
-            state.token = "";
+            state.location = "";
+            state.customerAuthToken = "";
+            state.customerRefreshToken = "";
         }
     }
 })

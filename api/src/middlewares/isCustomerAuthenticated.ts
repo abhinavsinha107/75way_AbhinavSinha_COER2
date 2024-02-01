@@ -2,8 +2,8 @@ import express from "express";
 import jwt from "jsonwebtoken";
 
 export const isCustomerAuthenticated = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const customerAuthToken = req.cookies.customerAuthToken;
-    const customerRefreshToken = req.cookies.customerRefreshToken;
+    const customerAuthToken = req.cookies.customerAuthToken || req.body.customerAuthToken;
+    const customerRefreshToken = req.cookies.customerRefreshToken || req.body.customerRefreshToken;
     if (!customerAuthToken && !customerRefreshToken) {
         return res.status(401).json({
             message: "Authentication failed: No authToken or refreshToken provided..."

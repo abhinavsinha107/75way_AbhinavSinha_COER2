@@ -1,10 +1,11 @@
 import express from "express";
 import { isCustomerAuthenticated } from "../middlewares/isCustomerAuthenticated";
-import { updateCustomerLocation, getNearbyCabs } from "../controllers/customerLoc.controller";
+import { updateCustomerLocation, getNearbyCabs, requestRide } from "../controllers/customer.controller";
 
 const router = express.Router();
 
 router.post("/updateCustomerLocation", isCustomerAuthenticated, updateCustomerLocation);
-router.get("/getNearbyCabs", getNearbyCabs);
+router.post("/getNearbyCabs", getNearbyCabs);
+router.post("/requestRide", isCustomerAuthenticated, requestRide);
 
 export default router;

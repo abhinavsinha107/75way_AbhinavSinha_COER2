@@ -79,7 +79,7 @@ export const login = async (req: express.Request, res: express.Response) => {
         );
         res.cookie("customerAuthToken", customerAuthToken, { httpOnly: true });
         res.cookie("customerRefreshToken", customerRefreshToken, { httpOnly: true });
-        res.status(200).json({ message: "Login Successfull...", customer, customerId: customer._id, token: customerAuthToken });
+        res.status(200).json({ message: "Login Successfull...", customer, customerAuthToken, customerRefreshToken });
     } catch (err) {
         res.status(500).json({
             message: "Unable to login..."

@@ -1,6 +1,6 @@
 import express from "express";
 import { isDriverAuthenticated } from "../middlewares/isDriverAuthenticated";
-import { updateDriverLocation } from "../controllers/driverLoc.controller";
+import { updateDriverLocation } from "../controllers/driver.controller";
 
 const router = express.Router();
 

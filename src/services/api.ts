@@ -1,16 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-interface Driver {
-    name: string;
-    email: string;
-    password: string;
-    location: string;
-    vehicleType: string;
-}
-
 export const api = createApi({
     reducerPath: 'api',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000' }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: 'http://localhost:8000'
+    }),
     endpoints: (builder) => ({
         registerCustomer: builder.mutation({
             query: (body: { name: string; email: string; password: string; }) => {
@@ -34,9 +28,27 @@ export const api = createApi({
             query: () => "/api/customerAuth/logout"
         }),
         updateCustomerLoc: builder.mutation({
+            query: (body: { location: string, customerAuthToken: string, customerRefreshToken: string }) => {
+                return {
+                    url: "/api/customer/updateCustomerLocation",
+                    method: "POST",
+                    body,
+                }
+            }
+        }),
+        getNearbyDrivers: builder.mutation({
             query: (body: { location: string }) => {
                 return {
-                    url: "/api/customerLoc/updateCustomerLocation",
+                    url: "/api/customer/getNearbyCabs",
+                    method: "POST",
+                    body,
+                }
+            }
+        }),
+        requestRide: builder.mutation({
+            query: (body: { driverId: string, customerAuthToken: string, customerRefreshToken: string, location: string }) => {
+                return {
+                    url: "/api/customer/requestRide",
                     method: "POST",
                     body,
                 }
@@ -64,18 +76,15 @@ export const api = createApi({
             query: () => "/api/driverAuth/logout"
         }),
         updateDriverLoc: builder.mutation({
-            query: (body: { location: string }) => {
+            query: (body: { location: string, driverAuthToken: string, driverRefreshToken: string }) => {
                 return {
-                    url: "/api/driverLoc/updateDriverLocation",
+                    url: "/api/driver/updateDriverLocation",
                     method: "POST",
                     body,
                 }
             }
         }),
-        getNearbyDrivers: builder.query({
-            query: (body: { location: string }) => `/api/driverLoc/getNearbyCabs`,
-        }),
     }),
 })
 
-export const { useRegisterCustomerMutation, useLoginCustomerMutation, useLazyLogoutCustomerQuery, useUpdateCustomerLocMutation, useRegisterDriverMutation, useLoginDriverMutation, useLazyLogoutDriverQuery, useUpdateDriverLocMutation, useLazyGetNearbyDriversQuery } = api;
+export const { useRegisterCustomerMutation, useLoginCustomerMutation, useLazyLogoutCustomerQuery, useUpdateCustomerLocMutation, useRequestRideMutation, useRegisterDriverMutation, useLoginDriverMutation, useLazyLogoutDriverQuery, useUpdateDriverLocMutation, useGetNearbyDriversMutation } = api;

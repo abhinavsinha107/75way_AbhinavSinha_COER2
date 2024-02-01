@@ -1,8 +1,8 @@
-import React from 'react'
-import DriverHeader from '../../components/DriverHeader'
-import { useAppSelector } from '../../store/store';
-import { selectDriverAuth } from '../../store/reducers/driverSlice';
-import MyLocation from '../../components/MyLocation';
+import DriverHeader from "../../components/DriverHeader";
+import { useAppSelector } from "../../store/store";
+import { selectDriverAuth } from "../../store/reducers/driverSlice";
+import DriverLocation from "../../components/DriverLocation";
+import ManageRequests from "../../components/ManageRequests";
 
 const DriverHome = () => {
   const { status } = useAppSelector(selectDriverAuth);
@@ -10,9 +10,10 @@ const DriverHome = () => {
   return (
     <div>
       <DriverHeader />
-      {status && <MyLocation />}
+      {status && <DriverLocation />}
+      <ManageRequests />
     </div>
-  )
-}
+  );
+};
 
-export default DriverHome
+export default DriverHome;

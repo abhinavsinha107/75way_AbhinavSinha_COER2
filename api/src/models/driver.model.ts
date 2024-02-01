@@ -25,6 +25,16 @@ const driverSchema = new mongoose.Schema({
         enum: ["Two", "Four"],
         required: true
     },
+    requests: {
+        type: Array,
+        default: [
+            
+        ]
+    },
+    approved: {
+        type: Array,
+        default: []
+    }
 })
 
 const Driver = mongoose.model("driver", driverSchema);

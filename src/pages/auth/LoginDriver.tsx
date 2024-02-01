@@ -30,7 +30,15 @@ export default function LoginDriver() {
   useEffect(() => {
     if (isSuccess) {
       console.log("User logged in successfully...");
-      dispatch(setDriver({ name: data.driver.name, token: data.token, status: true }));
+      dispatch(
+        setDriver({
+          name: data.driver.name,
+          location: "",
+          driverAuthToken: data.driverAuthToken,
+          driverRefreshToken: data.driverRefreshToken,
+          status: false,
+        })
+      );
       navigate("/driverHome");
     }
   }, [isSuccess]);

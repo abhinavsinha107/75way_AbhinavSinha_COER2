@@ -30,7 +30,14 @@ export default function LoginCustomer() {
   useEffect(() => {
     if (isSuccess) {
       console.log("User logged in successfully...");
-      dispatch(setCustomer({ name: data.customer.name, token: data.token }));
+      dispatch(
+        setCustomer({
+          name: data.customer.name,
+          location: "",
+          customerAuthToken: data.customerAuthToken,
+          customerRefreshToken: data.customerRefreshToken,
+        })
+      );
       navigate("/customerHome");
     }
   }, [isSuccess]);
