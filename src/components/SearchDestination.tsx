@@ -4,7 +4,7 @@ import {
   selectCustomerAuth,
   setCustomer,
 } from "../store/reducers/customerSlice";
-import { useUpdateCustomerLocMutation } from "../services/api";
+import { useGetCustomerStatusMutation, useUpdateCustomerLocMutation } from "../services/api";
 
 type Location = {
   latitude: number | null;
@@ -23,7 +23,7 @@ const SearchDestination = () => {
   const [destination, setDestination] = useState<string>("");
   const [showDestination, setShowDestination] = useState<boolean>(false);
 
-  const [updateCustomerLoc, { data, isSuccess, isError, error }] =
+  const [updateCustomerLoc] =
     useUpdateCustomerLocMutation();
 
   const fetchCity = async (latitude: any, longitude: any) => {

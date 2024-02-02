@@ -7,7 +7,7 @@ Can register and sign-in in driver panel                         - Done
 Register vehicle (two/four wheeler)                              - Done
 Set status (active, inactive)                                    - Done
 If active then fetch current location                            - Done
-Accept request for ride                                          - InProgress
+Accept request for ride                                          - Done
 Start/finish/cancel ride                                         - InProgress
 
 Customer:

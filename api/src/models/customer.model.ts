@@ -20,6 +20,11 @@ const cutsomerSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
+    currentStatus: {
+        type: String,
+        enum: ["Idle", "Waiting", "Rejected", "Approved", "Started", "Finished"],
+        default: "Idle"
+    },
     rides: {
         type: Array,
         default: [],

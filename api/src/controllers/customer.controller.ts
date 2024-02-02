@@ -56,3 +56,40 @@ export const requestRide = async (req: express.Request, res: express.Response) =
         })
     }
 }
+
+export const updateCustomerStatus = async (req: express.Request, res: express.Response) => {
+    try {
+        const {currentStatus} = req.body;
+        const customer = await Customer.findById({_id: req.customerId});
+        if (!customer) {
+            return res.status(404).json({
+                message: "Customer not found...",
+            });
+        }
+        customer.currentStatus = currentStatus;
+        await customer.save();
+        return res.status(200).json({
+            message: "Customer status updated successfully..."
+        })
+    } catch(err) {
+        return res.status(500).json({
+            message: "Unable to update customer status..."
+        })
+    }
+}
+
+export const getCustomerStatus = async (req: express.Request, res: express.Response) => {
+    try {
+        const customer = await Customer.findById({ _id: req.customerId });
+        if (!customer) {
+            return res.status(404).json({
+                message: "Customer not found...",
+            });
+        }
+        return res.status(200).json(customer.currentStatus);
+    } catch (err) {
+        return res.status(500).json({
+            message: "Unable to fetch customer status..."
+        })
+    }
+}

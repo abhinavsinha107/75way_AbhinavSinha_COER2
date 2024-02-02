@@ -27,9 +27,7 @@ const driverSchema = new mongoose.Schema({
     },
     requests: {
         type: Array,
-        default: [
-            
-        ]
+        default: []
     },
     approved: {
         type: Array,

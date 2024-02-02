@@ -54,6 +54,24 @@ export const api = createApi({
                 }
             }
         }),
+        updateCustomerStatus: builder.mutation({
+            query: (body: { customerAuthToken: string, customerRefreshToken: string, currentStatus: string }) => {
+                return {
+                    url: "/api/customer/updateCustomerStatus",
+                    method: "POST",
+                    body,
+                }
+            }
+        }),
+        getCustomerStatus: builder.mutation({
+            query: (body: { customerAuthToken: string, customerRefreshToken: string }) => {
+                return {
+                    url: "/api/customer/getCustomerStatus",
+                    method: "POST",
+                    body,
+                }
+            }
+        }),
         registerDriver: builder.mutation({
             query: (body: { name: string; email: string; password: string }) => {
                 return {
@@ -84,7 +102,43 @@ export const api = createApi({
                 }
             }
         }),
+        getCabRequests: builder.mutation({
+            query: (body: { driverAuthToken: string, driverRefreshToken: string }) => {
+                return {
+                    url: "/api/driver/getCabRequests",
+                    method: "POST",
+                    body,
+                }
+            }
+        }),
+        approveRequest: builder.mutation({
+            query: (body: {customerId: string, driverAuthToken: string, driverRefreshToken: string, location: string }) => {
+                return {
+                    url: "/api/driver/approveRequest",
+                    method: "POST",
+                    body,
+                }
+            }
+        }),
+        cancelRequest: builder.mutation({
+            query: (body: { customerId: string, driverAuthToken: string, driverRefreshToken: string, location: string }) => {
+                return {
+                    url: "/api/driver/cancelRequest",
+                    method: "POST",
+                    body,
+                }
+            }
+        }),
+        startRide: builder.mutation({
+            query: (body: { customerId: string, driverAuthToken: string, driverRefreshToken: string, location: string }) => {
+                return {
+                    url: "/api/driver/startRide",
+                    method: "POST",
+                    body,
+                }
+            }
+        }),
     }),
 })
 
-export const { useRegisterCustomerMutation, useLoginCustomerMutation, useLazyLogoutCustomerQuery, useUpdateCustomerLocMutation, useRequestRideMutation, useRegisterDriverMutation, useLoginDriverMutation, useLazyLogoutDriverQuery, useUpdateDriverLocMutation, useGetNearbyDriversMutation } = api;
+export const { useRegisterCustomerMutation, useLoginCustomerMutation, useLazyLogoutCustomerQuery, useUpdateCustomerLocMutation, useRequestRideMutation, useRegisterDriverMutation, useLoginDriverMutation, useLazyLogoutDriverQuery, useUpdateDriverLocMutation, useGetNearbyDriversMutation, useGetCabRequestsMutation, useApproveRequestMutation, useUpdateCustomerStatusMutation, useGetCustomerStatusMutation, useCancelRequestMutation, useStartRideMutation } = api;
