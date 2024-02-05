@@ -93,3 +93,20 @@ export const getCustomerStatus = async (req: express.Request, res: express.Respo
         })
     }
 }
+
+export const getRideHistory = async (req: express.Request, res: express.Response) => {
+    try {
+        const customer = await Customer.findById({ _id: req.customerId });
+        if (!customer) {
+            return res.status(404).json({
+                message: "Customer not found...",
+            });
+        }
+        customer.currentStatus = "Idle";
+        return res.status(200).json(customer.rides);
+    } catch (err) {
+        return res.status(500).json({
+            message: "Unable to fetch customer ride history..."
+        })
+    }
+}

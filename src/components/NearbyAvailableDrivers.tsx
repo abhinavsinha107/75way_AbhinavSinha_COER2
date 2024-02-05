@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   useGetCustomerStatusMutation,
   useGetNearbyDriversMutation,
+  useGetRideHistoryMutation,
   useRequestRideMutation,
   useUpdateCustomerStatusMutation,
 } from "../services/api";
@@ -18,6 +19,7 @@ const NearbyAvailableDrivers = () => {
   const [requestRide] = useRequestRideMutation();
   const [updateCustomerStatus] = useUpdateCustomerStatusMutation();
   const [getCustomerStatus, {data: customerStatusData, isSuccess: customerStatusSuccess}] = useGetCustomerStatusMutation();
+  const [getRidesHistory, {data: customerRidesData, isSuccess: customerRidesSuccess}] = useGetRideHistoryMutation();
 
   const getDrivers = async () => {
     await getNearbyDrivers({ location: location || "" });
@@ -38,6 +40,14 @@ const NearbyAvailableDrivers = () => {
     });
     setStatus("Waiting");
   };
+
+  const checkRideHistory = async () => {
+    await getRidesHistory({
+      customerAuthToken: customerAuthToken || "",
+      customerRefreshToken: customerRefreshToken || "",
+    });
+    setStatus("Checking Ride History");
+  }
 
   const checkRideStatus = async () => {
     await getCustomerStatus({customerAuthToken: customerAuthToken || "", customerRefreshToken: customerRefreshToken || ""});
@@ -107,6 +117,46 @@ const NearbyAvailableDrivers = () => {
           >
             Get Current Status
           </button>
+        </div>
+      </>
+    );
+  }
+
+  if (status === "Finished") {
+    return (
+      <>
+        <div className="mt-3 text-center mb-5">
+          <p>Ride Finished!! Enjoyed your ride?</p>
+        </div>
+        <div className="mt-3 text-center mb-5">
+            <button
+              onClick={checkRideHistory}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Check your ride history
+            </button>
+        </div>
+      </>
+    );
+  }
+
+  if (status === "Checking Ride History") {
+    return (
+      <>
+        <div className="mt-3 text-center mb-5">
+          <p>Your completed rides are:-</p>
+        </div>
+        <div className="mt-3 text-center mb-5">
+          {customerRidesSuccess &&
+            customerRidesData.map((customer: any, i: number) => {
+              return (
+                <div key={i}>
+                  <p>
+                    {customer.driverId} - {customer.location} to ...
+                  </p>
+                </div>
+              );
+            })}
         </div>
       </>
     );

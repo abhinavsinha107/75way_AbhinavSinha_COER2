@@ -74,7 +74,8 @@ export default function LoginDriver() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <p className="text-red-500 text-xs italic">
-            Please enter your password.
+            Enter valid password with uppercase, lowercase, number & @ between
+            range 7-15...
           </p>
         </div>
         <div className="flex items-center justify-between">

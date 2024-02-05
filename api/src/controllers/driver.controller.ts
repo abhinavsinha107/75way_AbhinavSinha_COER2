@@ -139,3 +139,28 @@ export const startRide = async (req: express.Request, res: express.Response) => 
         })
     }
 }
+
+export const finishRide = async (req: express.Request, res: express.Response) => {
+    try {
+        const { customerId, location } = req.body;
+        const customer = await Customer.findById({ _id: customerId });
+        if (!customer) {
+            return res.status(404).json({
+                message: "Customer not found...",
+            });
+        }
+        customer.currentStatus = "Finished";
+        const request = {
+            driverId: req.driverId, location: location
+        }
+        customer.rides.push(request)
+        await customer.save();
+        return res.status(200).json({
+            message: "Ride completed successfully..."
+        })
+    } catch (err) {
+        return res.status(500).json({
+            message: "Unable to approve request..."
+        })
+    }
+}

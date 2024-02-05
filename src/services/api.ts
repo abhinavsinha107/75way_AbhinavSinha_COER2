@@ -72,6 +72,15 @@ export const api = createApi({
                 }
             }
         }),
+        getRideHistory: builder.mutation({
+            query: (body: { customerAuthToken: string, customerRefreshToken: string }) => {
+                return {
+                    url: "/api/customer/getRideHistory",
+                    method: "POST",
+                    body,
+                }
+            }
+        }),
         registerDriver: builder.mutation({
             query: (body: { name: string; email: string; password: string }) => {
                 return {
@@ -138,7 +147,16 @@ export const api = createApi({
                 }
             }
         }),
+        finishRide: builder.mutation({
+            query: (body: { customerId: string, driverAuthToken: string, driverRefreshToken: string, location: string }) => {
+                return {
+                    url: "/api/driver/finishRide",
+                    method: "POST",
+                    body,
+                }
+            }
+        }),
     }),
 })
 
-export const { useRegisterCustomerMutation, useLoginCustomerMutation, useLazyLogoutCustomerQuery, useUpdateCustomerLocMutation, useRequestRideMutation, useRegisterDriverMutation, useLoginDriverMutation, useLazyLogoutDriverQuery, useUpdateDriverLocMutation, useGetNearbyDriversMutation, useGetCabRequestsMutation, useApproveRequestMutation, useUpdateCustomerStatusMutation, useGetCustomerStatusMutation, useCancelRequestMutation, useStartRideMutation } = api;
+export const { useRegisterCustomerMutation, useLoginCustomerMutation, useLazyLogoutCustomerQuery, useUpdateCustomerLocMutation, useRequestRideMutation, useRegisterDriverMutation, useLoginDriverMutation, useLazyLogoutDriverQuery, useUpdateDriverLocMutation, useGetNearbyDriversMutation, useGetCabRequestsMutation, useApproveRequestMutation, useUpdateCustomerStatusMutation, useGetCustomerStatusMutation, useCancelRequestMutation, useStartRideMutation, useFinishRideMutation, useGetRideHistoryMutation } = api;

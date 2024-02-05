@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   useApproveRequestMutation,
   useCancelRequestMutation,
+  useFinishRideMutation,
   useGetCabRequestsMutation,
   useStartRideMutation,
 } from "../services/api";
@@ -24,6 +25,7 @@ const ManageRequests = () => {
   const [approveRequestOfCab] = useApproveRequestMutation();
   const [cancelRequestOfCab] = useCancelRequestMutation();
   const [startRideOfCab] = useStartRideMutation();
+  const [finishRideOfCab] = useFinishRideMutation();
 
   const getRequests = async () => {
     await getCabRequests({
@@ -65,7 +67,16 @@ const ManageRequests = () => {
     setStart(true);
   };
 
-  const finishRide = async () => {};
+  const finishRide = async () => {
+    await finishRideOfCab({
+      customerId: customerIdd,
+      driverAuthToken: driverAuthToken || "",
+      driverRefreshToken: driverRefreshToken || "",
+      location: locationn || "",
+    });
+    setStart(false);
+    setFinish(true);
+  };
 
   if (approve) {
     return (
@@ -97,10 +108,23 @@ const ManageRequests = () => {
       <>
         <div className="mt-3 text-center mb-5">
           <button
-            onClick={() => finishRide()}
+            onClick={finishRide}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Finish
+          </button>
+        </div>
+      </>
+    );
+  }
+
+  if (finish) {
+    return (
+      <>
+        <div className="mt-3 text-center mb-5">
+          <p>Ride finished...</p>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Look for another customer
           </button>
         </div>
       </>
